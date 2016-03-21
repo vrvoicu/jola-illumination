@@ -1,0 +1,35 @@
+{
+  "name": "web-sales-overseer",
+  "version": "1.0.0",
+  "description": "monitor sales on websites and forums",
+  "main": "index.js",
+  "author": "voicu.victor.dev@gmail.com",
+  "license": "ISC",
+  "devDependencies": {
+    "grunt": "~0.4.5",
+    "grunt-contrib-clean": "^1.0.0",
+    "grunt-contrib-copy": "^0.8.2",
+    "grunt-contrib-jshint": "~0.10.0",
+    "grunt-contrib-uglify": "~0.5.0",
+    "grunt-contrib-watch": "^0.6.1",
+    "grunt-injector": "^0.6.1",
+    "grunt-wiredep": "^2.0.0"
+  },
+  "dependencies": {
+    "architect": "^0.1.11",
+    "async": "^2.0.0-rc.1",
+    "colors": "^1.1.2",
+    "debug": "^2.2.0",
+    "express": "^4.13.4",
+    "htmlparser2": "^3.9.0",
+    "lodash": "^4.5.0",
+    "path": "^0.12.7",
+    "pi-gpio": "0.0.8",
+    "request": "^2.69.0"
+  },
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "grunt": "grunt global;",
+    "start": "node server/server.js"
+  }
+}

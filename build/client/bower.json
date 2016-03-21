@@ -1,0 +1,33 @@
+{
+  "name": "client",
+  "homepage": "https://github.com/vrvoicu/webpage-parser",
+  "authors": [
+    "Victor Voicu <voicu.victor.dev@gmail.com>"
+  ],
+  "description": "",
+  "main": "",
+  "moduleType": [],
+  "license": "MIT",
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "test",
+    "tests"
+  ],
+  "dependencies": {
+    "angular": "~1.5.0",
+    "satellizer": "~0.14.0",
+    "bootstrap": "~3.3.6",
+    "jquery": "~2.2.1"
+  },
+  "overrides": {
+    "bootstrap": {
+      "main": [
+        "less/bootstrap.less",
+        "dist/js/bootstrap.js",
+        "dist/css/bootstrap.css"
+      ]
+    }
+  }
+}
