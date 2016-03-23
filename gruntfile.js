@@ -99,8 +99,7 @@ module.exports = function(grunt) {
                 },
                 files: {
                     'build/client/index.html': [
-                        'build/client/jspm_packages/system.js',
-                        'build/client/config.js'
+                        'build/client/plugins/**/*.js'
                     ]
                 }
             }/*,
@@ -149,6 +148,6 @@ module.exports = function(grunt) {
     //grunt.registerTask('default', ['uglify']);
     grunt.registerTask('server', ['jshint:server', /*'typescript'*/]);
     grunt.registerTask('client', ['jshint:client']);
-    grunt.registerTask('global', ['clean', 'copy', 'wiredep', 'injector', 'watch']);
+    grunt.registerTask('global', ['clean', 'copy', 'wiredep', 'injector'/*, 'watch'*/]);
 
 };

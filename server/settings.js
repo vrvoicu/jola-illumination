@@ -14,7 +14,8 @@
                 clientPath: process.env.PWD+path.sep+"build"+path.sep+"client"/*+path.sep+"source"*/,
                 clientUrlPath: '/'
             },
-            "./plugins/parser-definer"
+            "./plugins/raspberry-gpio",
+            "./plugins/scheduler"
         ]
     };
 

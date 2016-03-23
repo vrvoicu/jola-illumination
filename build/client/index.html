@@ -6,6 +6,7 @@
 
     <!-- bower:css -->
     <link rel="stylesheet" href="bower_components/bootstrap/dist/css/bootstrap.css" />
+    <link rel="stylesheet" href="bower_components/bootstrap-switch/dist/css/bootstrap3/bootstrap-switch.css" />
     <!-- endbower -->
 
     <!-- bower:js -->
@@ -13,29 +14,35 @@
     <script src="bower_components/angular/angular.js"></script>
     <script src="bower_components/satellizer/satellizer.js"></script>
     <script src="bower_components/bootstrap/dist/js/bootstrap.js"></script>
+    <script src="bower_components/bootstrap-switch/dist/js/bootstrap-switch.js"></script>
     <!-- endbower -->
 
     <!-- injector:js -->
+    <script src="plugins/app.js"></script>
+    <script src="plugins/plugins/gpios/gpios.js"></script>
     <!-- endinjector -->
 
 </head>
-<body ng-app>
+<body ng-app="illumination">
 
 <div>
     <div>
         <nav class="navbar navbar-inverse">
             <div class="container-fluid">
                 <div class="navbar-header">
-                    <a class="navbar-brand" href="#">Webpage parser</a>
+                    <a class="navbar-brand" href="#">Illumination</a>
                 </div>
                 <ul class="nav navbar-nav">
-                    <li><a href="#">Dashboard</a></li>
-                    <li><a href="#">Page 1</a></li>
-                    <li><a href="#">Page 2</a></li>
-                    <li><a href="#">Page 3</a></li>
+                    <li><a href="#">Wireless settings</a></li>
+                    <li><a href="#">Schedule settings</a></li>
+                    <li><a href="#">GPIO settings</a></li>
                 </ul>
             </div>
         </nav>
+    </div>
+
+    <div>
+        <gpio></gpio>
     </div>
 </div>
 

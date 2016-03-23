@@ -1,0 +1,10 @@
+{
+	"name":"scheduler",
+	"version":"1.0",
+	"main":"scheduler.js",
+	"plugin":
+	{
+		"consumes":["server", "raspberry_gpio"],
+		"provides":[]
+	}
+}

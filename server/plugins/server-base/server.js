@@ -3,6 +3,7 @@
 
     var express = require('express');
     var http = require ('http');
+    var bodyParser = require ('body-parser');
 
     var _ = require ('lodash');
 
@@ -24,6 +25,10 @@
         webserver.listen(port);
 
         app.use (clientUrlPath, express.static(clientPath));
+
+        //body parser
+        app.use(bodyParser.urlencoded({ extended: true }));
+        app.use(bodyParser.json());
 
         var routesInfos = [];
         var routers = {};
