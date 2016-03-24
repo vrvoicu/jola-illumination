@@ -7,7 +7,7 @@
 
     var app = angular.module ('illumination');
 
-    app.directive('gpio', [function(){
+    app.directive('jolaGpio', [function(){
         return {
             restrict: 'E',
             templateUrl: "plugins/plugins/gpios/template/template.html",

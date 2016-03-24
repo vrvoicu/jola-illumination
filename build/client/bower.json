@@ -20,7 +20,8 @@
     "satellizer": "~0.14.0",
     "bootstrap": "~3.3.6",
     "jquery": "~2.2.1",
-    "bootstrap-switch": "^3.3.2"
+    "bootstrap-switch": "^3.3.2",
+    "eonasdan-bootstrap-datetimepicker": "^4.17.37"
   },
   "overrides": {
     "bootstrap": {

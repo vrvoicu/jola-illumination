@@ -32,6 +32,6 @@
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "grunt": "grunt global;",
-    "start": "grunt global; node server/server.js"
+    "start": "node server/server.js"
   }
 }

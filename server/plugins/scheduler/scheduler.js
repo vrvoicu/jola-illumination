@@ -14,9 +14,55 @@ var async = require("async");
 			return Math.random() * (high - low) + low;
 		}
 
-        function getHoursBetween(startHour, endHour){
+        function getTimeBetween(startTime, endTime){
+            startTime = startTime.trim();
+            endTime = endTime.trim();
+
+            var startHour = parseInt(startTime.split(":")[0]);
+            var startMinute = parseInt(startTime.split(":")[1]);
+
+            var endHour = parseInt(endTime.split(":")[0]);
+            var endMinute = parseInt(endTime.split(":")[1]);
+
+            var minutesComputer = function (startHour, startMinute, endHour, endMinute) {
+
+                if(startHour == endHour){
+                    if(startMinute > endMinute)
+                        return -1;
+
+                    return endMinute - startMinute;
+                }
+                return (60 - startMinute) + endMinute
+            };
+
+            var minutes = minutesComputer(startHour, startMinute, endHour, endMinute);
+
+            var hoursComputer = function (startHour, endHour) {
+
+                if(startHour == 0)
+                    startHour = 24;
+
+                if(endHour == 0)
+                    endHour = 24;
+
+                if(startHour > endHour)
+                    return (24 - startHour) + endHour;
+
+                return endHour - startHour;
+
+            };
+
+            var hours = hoursComputer(startHour, endHour);
+
+            console.log(hours);
+
+
             var now = new Date();
             var remainingTime = 0;
+
+            if(endHour == "00:00")
+                endHour = "24:00";
+
             if(endHour> startHour){
                 startHour = Math.max(startHour, now.getHours());
                 remainingTime = endHour - startHour;
@@ -28,56 +74,59 @@ var async = require("async");
             return remainingTime;
         }
 
-		var scheduledJobs = [];
+        function createJobs(){
+            var scheduledJobs = [];
 
-        var startHour = 20;
-		var endHour = 5;
-        var minMinutes = 15, maxMinutes = 60;
-        var now = new Date();
-		var remainingTime = getHoursBetween(startHour, endHour) * 60;
-        var fromNowInMinutes = Math.ceil(random(minMinutes, maxMinutes));
+            var startHour = 20;
+            var endHour = 5;
+            var minMinutes = 15, maxMinutes = 60;
+            var now = new Date();
+            var remainingTime = getHoursBetween(startHour, endHour) * 60;
+            var fromNowInMinutes = Math.ceil(random(minMinutes, maxMinutes));
 
-		while((remainingTime - fromNowInMinutes) > 0){
+            while((remainingTime - fromNowInMinutes) > 0){
 
-			var hours = now.getHours();
-			var minutes = now.getMinutes();
+                var hours = now.getHours();
+                var minutes = now.getMinutes();
 
-			if(minutes + fromNowInMinutes > 60) {
-                minutes = (minutes + fromNowInMinutes) % 60;
-                hours += 1;
-            }
-            else{
-                minutes = (minutes + fromNowInMinutes);
-            }
+                if(minutes + fromNowInMinutes > 60) {
+                    minutes = (minutes + fromNowInMinutes) % 60;
+                    hours += 1;
+                }
+                else{
+                    minutes = (minutes + fromNowInMinutes);
+                }
 
-            remainingTime -= fromNowInMinutes;
-            fromNowInMinutes = Math.ceil(random(minMinutes, maxMinutes));
+                remainingTime -= fromNowInMinutes;
+                fromNowInMinutes = Math.ceil(random(minMinutes, maxMinutes));
 
-			var timeFromNow = new Date(now.getFullYear(), now.getMonth(), now.getDate(), hours, minutes, 0);
-            now = timeFromNow;
+                var timeFromNow = new Date(now.getFullYear(), now.getMonth(), now.getDate(), hours, minutes, 0);
+                now = timeFromNow;
 
-			var job = scheduler.scheduleJob(timeFromNow, function(){
+                var job = scheduler.scheduleJob(timeFromNow, function(){
 
-                var gpios = raspberry_gpio.gpios;
-                async.each(gpios, function(pin, callback) {
-                    raspberry_gpio.getPinState(pin, function (err, value) {
+                    var gpios = raspberry_gpio.gpios;
+                    async.each(gpios, function(pin, callback) {
+                        raspberry_gpio.getPinState(pin, function (err, value) {
+                            console.log(err);
+                            console.log(value);
+                            callback(err, value);
+                        });
+                    }, function(err){
                         console.log(err);
-                        console.log(value);
-                        callback(err, value);
+                        //console.log(results);
+                        // results now equals an array of the existing files
                     });
-                }, function(err){
-                    console.log(err);
-                    //console.log(results);
-                    // results now equals an array of the existing files
+
                 });
 
-			});
+                scheduledJobs.push(job);
 
-            scheduledJobs.push(job);
-
-            console.log(fromNowInMinutes);
-            console.log(timeFromNow);
-		}
+                console.log(fromNowInMinutes);
+                console.log(timeFromNow);
+            }
+            return scheduledJobs;
+        }
 
         function createClosingJob(endHour)
         {
@@ -98,45 +147,59 @@ var async = require("async");
                     })(gpios[index]);
                 }
             });
-            scheduledJobs.push(job);
+            return job;
         }
 
-        createClosingJob(10);
+        //createClosingJob(10);
 
-		server.registerForRoutes("/hourInterval", 50, function (router) {
-			/*router.get("", function (req, res) {
+        var schedulerState = false;
+        var schedulerStartTime = "12:00";
+        var schedulerEndTime = "23:00";
 
-
-				gpio.open(7, "output", function(err) {		// Open pin 16 for output
-					/!*gpio.write(7, 1, function() {			// Set pin 16 high (1)
-					 //gpio.close(7);						// Close pin 16
-					 });*!/
-				});
-
-				res.status(200).send();
-			});*/
+		server.registerForRoutes("/scheduler", 50, function (router) {
 
 			router.get("", function(req, res){
 
-                var gpios = raspberry_gpio.gpios;
-                var gpiosStates = [];
-                async.each(gpios, function(pin, callback) {
-                    raspberry_gpio.getPinState(pin, function (err, value) {
-                        if(err)
-                            return callback(err);
-
-                        gpiosStates.push({gpio: pin, state: value});
-
-                        callback();
-                    });
-                }, function(err){
-                    if(err)
-                        return res.status(500).send();
-
-                    res.status(200).send(gpiosStates);
+                res.status(200).send({
+                    state: schedulerState,
+                    startTime: schedulerStartTime,
+                    endTime: schedulerEndTime
                 });
 
 			});
+
+            router.put("", function (req, res) {
+                var state = req.body.state;
+
+                //if(schedulerEndTime - schedulerStartTime == 0)
+                //    return res.status(500).send({state: schedulerState});
+
+                schedulerState = state;
+
+                if(schedulerState == false)
+                    raspberry_gpio.closeAllPins();
+
+                res.status(200).send({state: schedulerState});
+
+            });
+
+            router.put("/interval", function (req, res) {
+                var startTime = req.body.startTime;
+                var endTime = req.body.endTime;
+
+                schedulerStartTime = startTime;
+                schedulerEndTime = endTime;
+
+                //if(schedulerEndTime - schedulerStartTime == 0)
+                //    return res.status(500).send();
+
+                if(schedulerState == true) {
+                    var timeBetween = getTimeBetween(schedulerStartTime, schedulerEndTime);
+                    console.log(timeBetween);
+                }
+
+                return res.status(200).send();
+            });
 		});
 
 		register (null,

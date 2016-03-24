@@ -25,30 +25,6 @@ var gpio = require("pi-gpio");
                         callback(null);
                     });
                 });
-
-                /*gpio.read(pin, function (err, value) {
-                    if(err)
-                        gpio.open(pin, "output", function(err) {
-                            if(err)
-                                return callback(err);
-                            gpio.write(pin, 1, function (err) {
-                                if(err)
-                                    return callback(err);
-                                callback(null);
-                            })
-                        });
-                    console.log(err);
-                    console.log(value);
-                });*/
-				/*gpio.open(pin, "output", function(err) {
-					if(err)
-						return callback(err);
-					gpio.write(pin, 1, function (err) {
-                        if(err)
-                            return callback(err);
-                        callback(null);
-                    })
-				});*/
 			},
 
 			setPinToLow : function(pin, callback){
@@ -59,39 +35,7 @@ var gpio = require("pi-gpio");
                         callback(null);
                     });
                 });
-
-
-
-                /*gpio.getDirection(pin, function (err, value) {
-                    if(err)
-                        return callback(err);
-
-                    if(value === "in")
-                        gpio.setDirection(pin, "input", function (err) {
-                            if(err)
-                                return callback(err);
-
-                            gpio.close(pin, function (err) {
-                                if(err)
-                                    return callback(err);
-                                callback(null);
-                            });
-                        });
-                });*/
-
-                /*gpio.write(pin, 0, function (err) {
-                    if(err)
-                        return callback(err);
-                    /!*gpio.setDirection(pin, "input", function (err) {
-                        if(err)
-                            return callback(err);
-                        gpio.close(pin, function (err) {
-                            if(err)
-                                return callback(err);
-                            callback(null);
-                        });
-                    });*!/
-                });*/
+                
 			},
 
 			getPinState : function(pin, callback){
@@ -99,7 +43,20 @@ var gpio = require("pi-gpio");
                     console.log("pin: "+pin+" value: "+value);
 					callback(err, value);
 				});
-			}
+			},
+            
+            closeAllPins: function () {
+                var raspberry_gpio = this;
+                async.each(raspberry_gpio.gpios, function (pin, callback) {
+
+                    raspberry_gpio.setPinToLow(pin, function (err) {
+                        callback();
+                    });
+
+                }, function (err) {
+
+                });
+            }
 
 		};
 

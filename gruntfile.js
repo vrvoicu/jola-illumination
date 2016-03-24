@@ -125,10 +125,19 @@ module.exports = function(grunt) {
         },
 
         watch: {
-            files: [
-                'client/bower_components/*'
-            ],
-            tasks: ['wiredep']
+            client: {
+                files: [
+                    'client/**/*'
+                ],
+                tasks: ['copy:client', 'wiredep', 'injector']
+            },
+            server: {
+                files: [
+                    'server/**/*'
+                ],
+                tasks: ['copy:server']
+            }
+
         },
     });
 
@@ -148,6 +157,6 @@ module.exports = function(grunt) {
     //grunt.registerTask('default', ['uglify']);
     grunt.registerTask('server', ['jshint:server', /*'typescript'*/]);
     grunt.registerTask('client', ['jshint:client']);
-    grunt.registerTask('global', ['clean', 'copy', 'wiredep', 'injector'/*, 'watch'*/]);
+    grunt.registerTask('global', ['clean', 'copy', 'wiredep', 'injector', 'watch']);
 
 };

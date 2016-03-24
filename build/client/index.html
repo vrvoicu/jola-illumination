@@ -7,6 +7,7 @@
     <!-- bower:css -->
     <link rel="stylesheet" href="bower_components/bootstrap/dist/css/bootstrap.css" />
     <link rel="stylesheet" href="bower_components/bootstrap-switch/dist/css/bootstrap3/bootstrap-switch.css" />
+    <link rel="stylesheet" href="bower_components/eonasdan-bootstrap-datetimepicker/build/css/bootstrap-datetimepicker.min.css" />
     <!-- endbower -->
 
     <!-- bower:js -->
@@ -15,35 +16,23 @@
     <script src="bower_components/satellizer/satellizer.js"></script>
     <script src="bower_components/bootstrap/dist/js/bootstrap.js"></script>
     <script src="bower_components/bootstrap-switch/dist/js/bootstrap-switch.js"></script>
+    <script src="bower_components/moment/moment.js"></script>
+    <script src="bower_components/moment-timezone/builds/moment-timezone-with-data-2010-2020.js"></script>
+    <script src="bower_components/eonasdan-bootstrap-datetimepicker/build/js/bootstrap-datetimepicker.min.js"></script>
     <!-- endbower -->
 
     <!-- injector:js -->
     <script src="plugins/app.js"></script>
     <script src="plugins/plugins/gpios/gpios.js"></script>
+    <script src="plugins/plugins/main/main.js"></script>
+    <script src="plugins/plugins/scheduler/scheduler.js"></script>
     <!-- endinjector -->
 
 </head>
 <body ng-app="illumination">
 
 <div>
-    <div>
-        <nav class="navbar navbar-inverse">
-            <div class="container-fluid">
-                <div class="navbar-header">
-                    <a class="navbar-brand" href="#">Illumination</a>
-                </div>
-                <ul class="nav navbar-nav">
-                    <li><a href="#">Wireless settings</a></li>
-                    <li><a href="#">Schedule settings</a></li>
-                    <li><a href="#">GPIO settings</a></li>
-                </ul>
-            </div>
-        </nav>
-    </div>
-
-    <div>
-        <gpio></gpio>
-    </div>
+    <jola-main></jola-main>
 </div>
 
 </body>
