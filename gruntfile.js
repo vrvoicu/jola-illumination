@@ -50,7 +50,17 @@ module.exports = function(grunt) {
                         dest: 'build/client'
                     }
                 ]
-            }
+            }/*,
+            node_modules:{
+                files: [
+                    {
+                        expand: true,
+                        cwd: "./node_modules",
+                        src: '**',
+                        dest: "build/node_modules"
+                    }
+                ]
+            }*/
         },
 
         jshint: {
@@ -142,11 +152,22 @@ module.exports = function(grunt) {
 
         uglify: {
             client: {
+                options:{
+                    mangle: false
+                },
                 files: [{
                     expand: true,
                     cwd: 'client',
                     src: ['**/*.js', '!client/bower_components/**/*.js', '!**/bower_components/**/*.js'],
                     dest: 'build/client'
+                }]
+            },
+            server: {
+                files: [{
+                    expand: true,
+                    cwd: 'server',
+                    src: ['**/*.js', '!**/node_modules/**/*.js'],
+                    dest: 'build/server'
                 }]
             }
         }
@@ -169,6 +190,6 @@ module.exports = function(grunt) {
     //grunt.registerTask('default', ['uglify']);
     grunt.registerTask('server', ['jshint:server', /*'typescript'*/]);
     grunt.registerTask('client', [/*'jshint:client',*/ 'clean', 'copy:client', 'wiredep', 'injector', 'uglify:client']);
-    grunt.registerTask('global', ['clean', 'copy', 'wiredep', 'injector', 'watch']);
+    grunt.registerTask('global', ['clean', 'copy', 'wiredep', 'injector', 'uglify', 'watch']);
 
 };
