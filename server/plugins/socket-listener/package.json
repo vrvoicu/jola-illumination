@@ -1,0 +1,10 @@
+{
+	"name":"socket-listener",
+	"version":"0.1.1",
+	"main":"socket-listener.js",
+	"plugin":
+	{
+		"consumes":["server"],
+		"provides":["socket_listener"]
+	}
+}

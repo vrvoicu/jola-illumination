@@ -1,0 +1,10 @@
+{
+	"name":"mysql-settings",
+	"version":"0.1.1",
+	"main":"mysql-settings.js",
+	"plugin":
+	{
+		"consumes":[],
+		"provides":["mysql_settings"]
+	}
+}

@@ -94,6 +94,7 @@
             {
                 server:
                 {
+                    httpServer: webserver,
 
                     registerForRoutes: function (route, priority, registerRoutesFunction) {
 

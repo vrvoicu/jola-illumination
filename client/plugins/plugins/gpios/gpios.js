@@ -7,37 +7,65 @@
 
     var app = angular.module ('illumination');
 
-    app.directive('jolaGpio', [function(){
+    app.directive('gpio', [function(){
         return {
             restrict: 'E',
             templateUrl: "plugins/plugins/gpios/template/template.html",
-            controller: 'gpioCtrl',
-            controllerAs: 'ctrl',
+            controller: 'gpioController',
+            controllerAs: 'gpioCtrl',
             replace: true
         };
     }]);
 
-    app.controller('gpioCtrl',
-        ["gpioService", "$timeout", function(gpioService, $timeout){
+    app.controller('gpioController',
+        ["gpioService", "$timeout", 'socket', 'eventEmitter', function(gpioService, $timeout, socket, eventEmitter){
 
-            var ctrl = this;
-            gpioService.getGPIOs(function (gpios) {
-                ctrl.gpios = gpios;
+            var gpioCtrl = this;
+
+            socket.on('update', function (gpios) {
+                for (var index = 0; index < gpioCtrl.gpios.length; index++)
+                    for (var secondIndex = 0; secondIndex < gpios.length; secondIndex++)
+                        if (gpioCtrl.gpios[index].gpio == gpios[secondIndex].gpio)
+                            gpioCtrl.gpios[index].state = gpios[secondIndex].state;
+
+                for(var index = 0; index < gpioCtrl.gpios.length ; index++)
+                    $("[name='bootstrap-switch-"+gpioCtrl.gpios[index].gpio+"']").bootstrapSwitch('state', gpioCtrl.gpios[index].state);
+
             });
 
-            $timeout(function () {
-                for(var index = 0; index < ctrl.gpios.length ; index++) {
-                    var bootstrapSwitch = $("[name='bootstrap-switch-"+ctrl.gpios[index].gpio+"']").bootstrapSwitch();
-                    bootstrapSwitch.on('switchChange.bootstrapSwitch', function (event, state) {
-                        var gpio = event.currentTarget.attributes.customid.value;
-                        console.log(gpio);
-                        console.log(state);
-                        gpioService.setGPIOs(gpio, state, function () {
 
-                        });
-                    });
+            eventEmitter.on('enableGpios', function () {
+                for(var index = 0; index < gpioCtrl.gpios.length ; index++) {
+                    $("[name='bootstrap-switch-" + gpioCtrl.gpios[index].gpio + "']").bootstrapSwitch('disabled', false);
                 }
-            },100);
+                socket.emit("getUpdate");
+            });
+
+            eventEmitter.on('disableGpios', function () {
+                for(var index = 0; index < gpioCtrl.gpios.length ; index++) {
+                    $("[name='bootstrap-switch-" + gpioCtrl.gpios[index].gpio + "']").bootstrapSwitch('disabled', true);
+                }
+            });
+
+            gpioService.getGPIOs(function (gpios) {
+                gpioCtrl.gpios = gpios;
+
+                $timeout(function () {
+                    for(var index = 0; index < gpioCtrl.gpios.length ; index++) {
+                        var bootstrapSwitch = $("[name='bootstrap-switch-"+gpioCtrl.gpios[index].gpio+"']").bootstrapSwitch();
+                        bootstrapSwitch.on('switchChange.bootstrapSwitch', function (event, state) {
+                            var gpio = event.currentTarget.attributes.customid.value;
+                            gpioService.setGPIOs(gpio, state, function () {
+                            });
+                        });
+                    }
+
+                    for(var index = 0; index < gpioCtrl.gpios.length ; index++)
+                        $("[name='bootstrap-switch-"+gpioCtrl.gpios[index].gpio+"']").bootstrapSwitch('state', gpioCtrl.gpios[index].state);
+
+                },100);
+
+            });
 
         }]
     );

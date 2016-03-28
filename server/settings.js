@@ -14,6 +14,8 @@
                 clientPath: process.env.PWD+path.sep+"build"+path.sep+"client"/*+path.sep+"source"*/,
                 clientUrlPath: '/'
             },
+            "./plugins/mysql-settings",
+            "./plugins/socket-listener",
             "./plugins/raspberry-gpio",
             "./plugins/scheduler"
         ]

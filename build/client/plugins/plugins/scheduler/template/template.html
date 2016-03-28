@@ -4,24 +4,31 @@
     </div>
 
     <div>
-        Start time: <div class='input-group date' id='datetimepicker-1' style="max-width: 200px">
-            <input type='text' class="form-control" />
-            <span class="input-group-addon">
-                <span class="glyphicon glyphicon-time"></span>
-            </span>
-        </div>
+        Start time:
+        <datetimepicker ng-model="schedulerCtrl.dateTimePickers[0]"
+                        date-format="HH:mm"
+                        date-options="dateOptions"
+                        date-disabled="isDisabledDate(date, mode)"
+                        hidden-date="true"
+                        show-spinners="true"
+                        show-meridian="showMeridian" >
+        </datetimepicker>
     </div>
 
     <div>
-        End time: <div class='input-group date' id='datetimepicker-2' style="max-width: 200px">
-            <input type='text' class="form-control" />
-            <span class="input-group-addon">
-                <span class="glyphicon glyphicon-time"></span>
-            </span>
-        </div>
+        End time:
+        <datetimepicker ng-model="schedulerCtrl.dateTimePickers[1]"
+                        date-format="HH:mm"
+                        date-options="dateOptions"
+                        date-disabled="isDisabledDate(date, mode)"
+                        hidden-date="true"
+                        show-spinners="true"
+                        show-meridian="showMeridian" >
+        </datetimepicker>
     </div>
 
     <div>
+        <p ng-model="schedulerCtrl.error"></p>
         <button type="button" class="btn btn-primary" ng-click="schedulerCtrl.save()">Save</button>
     </div>
 

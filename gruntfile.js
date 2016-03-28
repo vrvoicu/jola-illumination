@@ -139,6 +139,17 @@ module.exports = function(grunt) {
             }
 
         },
+
+        uglify: {
+            client: {
+                files: [{
+                    expand: true,
+                    cwd: 'client',
+                    src: ['**/*.js', '!client/bower_components/**/*.js', '!**/bower_components/**/*.js'],
+                    dest: 'build/client'
+                }]
+            }
+        }
     });
 
     grunt.loadNpmTasks('grunt-contrib-clean');
@@ -151,12 +162,13 @@ module.exports = function(grunt) {
     grunt.loadNpmTasks('grunt-injector');
     //this is used to wire bower dependencies
     grunt.loadNpmTasks('grunt-wiredep');
+    grunt.loadNpmTasks('grunt-contrib-uglify');
 
 
     // Default task(s).
     //grunt.registerTask('default', ['uglify']);
     grunt.registerTask('server', ['jshint:server', /*'typescript'*/]);
-    grunt.registerTask('client', ['jshint:client']);
+    grunt.registerTask('client', [/*'jshint:client',*/ 'clean', 'copy:client', 'wiredep', 'injector', 'uglify:client']);
     grunt.registerTask('global', ['clean', 'copy', 'wiredep', 'injector', 'watch']);
 
 };

@@ -1,13 +1,13 @@
 <div>
-    <div style="float: left; margin-right: 30px">
-        <ul ng-repeat="gpio in ctrl.gpios">
+    <div style="float: left; width: 30%;">
+        <ul ng-repeat="gpio in gpioCtrl.gpios" style="list-style: none">
             <li>
                 {{gpio.gpio}}
-                <input ng-model="gpio.state" type="checkbox" name="bootstrap-switch-{{gpio.gpio}}" customId="{{gpio.gpio}}" checked>
+                <input type="checkbox" name="bootstrap-switch-{{gpio.gpio}}" customId="{{gpio.gpio}}" checked>
             </li>
         </ul>
     </div>
-    <div style="margin-left: 30px">
-        <img src="img/RP2_Pinout.png" />
+    <div style="margin-left: 30%;width: 70%;">
+        <img src="img/RP2_Pinout.png" style="width: 100%"/>
     </div>
 </div>

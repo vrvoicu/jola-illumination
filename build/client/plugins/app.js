@@ -1,11 +1,1 @@
-/**
- * Created by victor on 24.02.2016.
- */
-(function(){
-    "use strict";
-
-    var module = angular.module('illumination', []);
-
-    module.config([function () {
-    }]);
-})();
+!function(){"use strict";var a=angular.module("illumination",["btford.socket-io","ui.bootstrap","ui.bootstrap.datetimepicker"]);a.config([function(){}]),a.factory("socket",function(a){return a()}),a.factory("eventEmitter",function(){var a={},b=Emitter;return b(a),a})}();

@@ -4,7 +4,7 @@
 	"main":"scheduler.js",
 	"plugin":
 	{
-		"consumes":["server", "raspberry_gpio"],
+		"consumes":["server", "raspberry_gpio", "socket_listener", "mysql_settings"],
 		"provides":[]
 	}
 }

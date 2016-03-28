@@ -4,6 +4,9 @@
     <meta charset="UTF-8">
     <title>Title</title>
 
+    <script src="/socket.io/socket.io.js"></script>
+    <script>var socket = io();</script>
+
     <!-- bower:css -->
     <!-- endbower -->
 
@@ -16,7 +19,7 @@
 </head>
 <body ng-app="illumination">
 
-<div>
+<div id="body-wrapper" style="max-width: 700px; position: relative">
     <jola-main></jola-main>
 </div>
 
