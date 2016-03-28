@@ -18,8 +18,11 @@ var async = require("async");
         var schedulerStartTime = "23:49";
         var schedulerEndTime = "00:00";
 
-        var minMinutes = 15;
-        var maxMinutes = 30;
+        var minMinutes = 0;
+        var maxMinutes = 1;
+
+        var schedulerStartingJob = null;
+        var schedulerEndingJob = null;
 
         var isCreatingJobs = false;
 
@@ -118,7 +121,7 @@ var async = require("async");
                 leftTimeInMinutes -= fromNowInMinutes;
                 fromNowInMinutes = Math.ceil(random(minMinutes, maxMinutes));
 
-                var timeFromNow = new Date(now.getFullYear(), now.getMonth(), day, hours, minutes, 0);
+                /*var timeFromNow = new Date(now.getFullYear(), now.getMonth(), day, hours, minutes, 0);
                 now = timeFromNow;
 
                 var job = scheduler.scheduleJob(timeFromNow, function () {
@@ -129,9 +132,9 @@ var async = require("async");
                         raspberry_gpio.setPinToHigh(pin, function (err) {
                             //console.log(err);
 
-                            /*raspberry_gpio.getPinStates(function (gpios) {
+                            /!*raspberry_gpio.getPinStates(function (gpios) {
                              socket_listener.sockets.emit('update', gpios);
-                             });*/
+                             });*!/
 
                         });
 
@@ -139,9 +142,9 @@ var async = require("async");
 
                 });
 
-                scheduledJobs.push(job);
+                scheduledJobs.push(job);*/
 
-                /*for(var index = 0; index < 60; index += 2) {
+                for(var index = 0; index < 60; index += 2) {
 
                     var timeFromNow = new Date(now.getFullYear(), now.getMonth(), day, hours, minutes, index);
                     now = timeFromNow;
@@ -156,9 +159,9 @@ var async = require("async");
                             raspberry_gpio.setPinToHigh(pin, function (err) {
                                 //console.log(err);
 
-                                /!*raspberry_gpio.getPinStates(function (gpios) {
+                                /*raspberry_gpio.getPinStates(function (gpios) {
                                     socket_listener.sockets.emit('update', gpios);
-                                });*!/
+                                });*/
 
                             });
 
@@ -166,7 +169,7 @@ var async = require("async");
 
                     });
                     scheduledJobs.push(job);
-                }*/
+                }
             }
             return scheduledJobs;
         }
@@ -191,7 +194,10 @@ var async = require("async");
 
             });
 
-            schedulerJobs.push(job);
+            if(schedulerStartingJob != null)
+                schedulerStartingJob.cancel();
+
+            schedulerStartingJob = job;
         }
 
         function createClosingJob() {
@@ -208,7 +214,10 @@ var async = require("async");
 
             });
 
-            schedulerJobs.push(job);
+            if(schedulerEndingJob != null)
+                schedulerEndingJob.cancel();
+
+            schedulerEndingJob = job;
         }
 
         function getSchedulerTime(time){
@@ -299,6 +308,12 @@ var async = require("async");
                             socket_listener.sockets.emit('update', gpios);
                         });*/
                     });
+
+                    if(schedulerStartingJob != null)
+                        schedulerStartingJob.cancel();
+
+                    if(schedulerEndingJob != null)
+                        schedulerEndingJob.cancel();
                 }
                 else if(schedulerState == true){
 
@@ -306,6 +321,14 @@ var async = require("async");
 
                     createStartingJob();
                     createClosingJob();
+
+                    var now = new Date();
+                    var hourAndMinute = getHourAndMinute(schedulerStartTime);
+
+                    if((now.getHours() > hourAndMinute[0]) || (now.getHours() == hourAndMinute[0] && now.getMinutes() > hourAndMinute[1])) {
+                        var time =getTimeBetween(schedulerStartTime, schedulerEndTime);
+                        schedulerJobs = createJobs(hourAndMinute[0], hourAndMinute[1], time, minMinutes, maxMinutes);
+                    }
 
                     isCreatingJobs = false;
 

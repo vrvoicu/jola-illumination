@@ -24,16 +24,16 @@
     "express": "^4.13.4",
     "htmlparser2": "^3.9.0",
     "lodash": "^4.5.0",
+    "mysql": "felixge/node-mysql",
     "node-schedule": "^1.1.0",
     "path": "^0.12.7",
     "pi-gpio": "0.0.8",
     "request": "^2.69.0",
-    "rpi-gpio": "^0.7.0",
     "socket.io": "^1.4.5"
   },
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "grunt": "grunt global;",
-    "start": "node server/server.js"
+    "start": "node build/server/server.js"
   }
 }
