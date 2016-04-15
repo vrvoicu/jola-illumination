@@ -14,10 +14,12 @@
                 clientPath: process.env.PWD+path.sep+"build"+path.sep+"client"/*+path.sep+"source"*/,
                 clientUrlPath: '/'
             },
-            "./plugins/mysql-settings",
+            /*"./plugins/mysql-settings",*/
             "./plugins/socket-listener",
-            "./plugins/raspberry-gpio",
-            "./plugins/scheduler"
+            /*"./plugins/raspberry-gpio",*/
+            /*"./plugins/scheduler",*/
+            "./plugins/raspberry-camera",
+            "./plugins/camera-socket-transmitter"
         ]
     };
 
